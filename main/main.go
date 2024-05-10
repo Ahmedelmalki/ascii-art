@@ -1,51 +1,22 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"os"
+	"strings"
 )
 
 func main() {
-	file, err := os.Open("standard.txt")
-	if err != nil {
-		fmt.Println("Error opening file:", err)
-		return
-	}
-	arg := os.Args[1]
-	r := []rune(arg)
-	for i := 0; i < len(r); i++ {
-		temp(r[i], file)
-
-	}
-	defer file.Close()
-}
-
-func temp(char rune, file *os.File) /* []string */ {
-
-	scanner := bufio.NewScanner(file)
-	position := 0
-	file.Seek(0, 0)
-	for scanner.Scan() {
-		position++
-
-		startLine := int(char-32)*9 + 2
-		endLine := startLine + 7
-		if position < startLine {
-
-			continue
+	arr := os.Args[1]
+	file, _ := os.ReadFile("standard.txt")
+	filesplit := strings.Split(string(file), "\n")
+	arrsplit := strings.Split(arr, "\\n")
+	for _, word := range arrsplit {
+		for j := 1; j < 9; j++ {
+			for i := 0; i < len(word); i++ {
+				fmt.Print(filesplit[(int(word[i])-32)*9+j])
+			}
+			fmt.Println()
 		}
-		if position > endLine {
-			break
-		}
-	
-		text := scanner.Text()
-
-		fmt.Println(text)
 	}
-
-	if err := scanner.Err(); err != nil {
-		fmt.Println("Error reading file:", err)
-	}
-	// return
 }
